@@ -20,5 +20,6 @@ from project.views import predict_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', predict_view, name='predict'),
+    path('', predict_view, name='predict_view'),
+    
 ]

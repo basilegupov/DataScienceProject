@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 django = "*"
 joblib = "*"
+scikit-learn = "*"
+xgboost = "*"
 
 [dev-packages]
 
