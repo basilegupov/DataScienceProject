@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Прогнозування відтоку клієнтів</title>
+    {% load static %}
+    <link
+      href="{% static 'images/favicon2.webp' %}"
+      rel="shortcut icon"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="{% static 'css/style.min.css' %}" />
+  </head>
+  <body id="topSection">
+    <div id="preloader">
+      <div id="status"></div>
+    </div>
+    <section class="iner_wrap">
+      <div class="content">
+        <form
+          class="prediction-form"
+          id="prediction-form"
+          method="POST"
+          action="{% url 'predict_view' %}"
+        >
+          {% csrf_token %}
+          <div class="form-inner">
+            <legend>Прогнозування відтоку клієнтів</legend>
+            {{ form.as_p }}
+
+            <div class="btn-wrap">
+              <button type="submit" style="background-color: #82bb57">
+                Отримати прогноз
+              </button>
+              <button type="button" id="reset-button">
+                Сгенерувати ще раз
+              </button>
+            </div>
+          </div>
+        </form>
+        {% if prediction %}
+        <div id="result" class="prediction-result">
+          <div class="prediction-result-inner">
+            <h2>Результат прогнозу:</h2>
+            <p class="status">{{ prediction }}</p>
+            
+          </div>
+        </div>
+        {% endif %} {% if errors %}
+        <div class="prediction-result">
+          <div class="prediction-result-inner">
+            <h3>Помилки валидації:</h3>
+            <ul>
+              {% for field, error_list in errors.items %}
+              <li>{{ field }}: {{ error_list|join:", " }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <script src=" {% static 'scripts/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'scripts/main.js' %}"></script>
+    <script>
+      document
+        .getElementById("reset-button")
+        .addEventListener("click", function () {
+          // Очистить форму
+          document.querySelector("#prediction-form").reset();
+
+          // Удалить результаты
+          const resultDiv = document.getElementById("result"); // Изменено на выбор по id
+          if (resultDiv) {
+            resultDiv.remove(); // Удаляем блок с результатом
+          }
+        });
+    </script>
+  </body>
+</html>

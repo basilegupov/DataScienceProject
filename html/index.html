@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Прогнозирование оттока клиентов</title>
+    <link
+      href="./images/favicon2.webp"
+      rel="shortcut icon"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./css/style.min.css" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body id="topSection">
+    <div id="preloader">
+      <div id="status"></div>
+    </div>
+    <section class="iner_wrap">
+      <div class="content">
+        <form id="prediction-form" class="prediction-form">
+          <div class="form-inner">
+            <legend>Прогнозирование оттока клиентов</legend>
+            <div
+              class="form-item display-flex display-flex-start checkbox-wrap"
+            >
+              <label for="is_tv_subscriber">Подписчик ТВ:</label>
+              <input
+                type="checkbox"
+                id="is_tv_subscriber"
+                name="is_tv_subscriber"
+              />
+            </div>
+
+            <div
+              class="form-item display-flex display-flex-start checkbox-wrap"
+            >
+              <label for="is_movie_package_subscriber"
+                >Подписчик на фильмы:</label
+              >
+              <input
+                type="checkbox"
+                id="is_movie_package_subscriber"
+                name="is_movie_package_subscriber"
+              />
+            </div>
+
+            <div class="form-item">
+              <label for="subscription_age"
+                >Возраст подписки (в месяцах):</label
+              >
+              <input
+                type="number"
+                min="0"
+                id="subscription_age"
+                name="subscription_age"
+                required
+              />
+            </div>
+
+            <div class="form-item">
+              <label for="bill_avg">Средний счет:</label>
+              <input
+                type="number"
+                min="0"
+                id="bill_avg"
+                name="bill_avg"
+                required
+              />
+            </div>
+
+            <div class="form-item">
+              <label for="remaining_contract"
+                >Остаток по контракту (в месяцах):</label
+              >
+              <input
+                type="number"
+                min="0"
+                id="remaining_contract"
+                name="remaining_contract"
+                required
+              />
+            </div>
+
+            <div class="form-item">
+              <label for="service_failure_count"
+                >Количество сбоев в услугах:</label
+              >
+              <input
+                type="number"
+                min="0"
+                id="service_failure_count"
+                name="service_failure_count"
+                required
+              />
+            </div>
+
+            <div class="form-item">
+              <label for="download_avg"
+                >Средняя скорость загрузки (Mbps):</label
+              >
+              <input
+                type="number"
+                min="0"
+                id="download_avg"
+                name="download_avg"
+                required
+              />
+            </div>
+
+            <div class="form-item">
+              <label for="upload_avg">Средняя скорость загрузки (Mbps):</label>
+              <input
+                type="number"
+                min="0"
+                id="upload_avg"
+                name="upload_avg"
+                required
+              />
+            </div>
+
+            <div
+              class="form-item display-flex display-flex-start checkbox-wrap"
+            >
+              <label for="download_over_limit"
+                >Превышение лимита загрузки:</label
+              >
+              <input
+                type="checkbox"
+                id="download_over_limit"
+                name="download_over_limit"
+              />
+            </div>
+
+            <div class="btn-wrap">
+              <button type="submit">Получить предсказание</button>
+            </div>
+          </div>
+        </form>
+        <div
+          id="prediction-result"
+          class="prediction-result"
+          style="display: none"
+        >
+          <h2>Результат предсказания:</h2>
+          <p id="result"></p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      document
+        .getElementById("prediction-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Предотвращаем перезагрузку страницы
+
+          // Собираем данные формы
+          const formData = new FormData(event.target);
+          const data = Object.fromEntries(formData);
+
+          // Отправляем данные на сервер для получения предсказания
+          fetch("/predict", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Обрабатываем ответ
+              document.getElementById("result").textContent = data.prediction;
+              document.getElementById("prediction-result").style.display =
+                "block";
+            })
+            .catch((error) => {
+              console.error("Ошибка:", error);
+            });
+        });
+    </script>
+    <a href="#topSection" title="вернуться вверх" class="backToTop">
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+      <span>вернуться вверх</span>
+    </a>
+
+    <script src="./scripts/jquery-3.3.1.min.js"></script>
+    <script src="./scripts/main.js"></script>
+  </body>
+</html>
