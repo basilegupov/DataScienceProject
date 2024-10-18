@@ -7,23 +7,26 @@ import joblib  # для загрузки модели машинного обу�
 logger = logging.getLogger(__name__)
 
 def predict_view(request):
-    # Создаем пустую форму при GET-запросе
-    form = PredictionForm()
-    prediction = None  # Изначально результат пустой
-    probability = None  # Изначально вероятность пустая
+    # Инициализация переменных для отображения результата
+    prediction = None
+    probability = None
 
+    # Обрабатываем POST-запрос
     if request.method == 'POST':
         form = PredictionForm(request.POST)
         if form.is_valid():
             # Получаем данные из формы
             data = form.cleaned_data
             
-            # Логируем данные, полученные из формы
+            # Логируем полученные данные
             logger.info("Полученные данные из формы: %s", data)
             
-            # Загрузка предобученной модели машинного обучения
-            model = joblib.load('project/model.pkl')
+            # Загрузка модели машинного обучения
+            model = joblib.load('project/XGBClassifier.pkl')
             
+            # Загрузка масштабировщика
+            scaler = joblib.load('project/scaler.pkl')
+
             # Подготовка данных для модели
             input_data = [[
                 data['id'],
@@ -31,27 +34,31 @@ def predict_view(request):
                 data['is_movie_package_subscriber'],
                 data['subscription_age'],
                 data['bill_avg'],
-                data['remaining_contract'],
+                data['reamining_contract'],
                 data['service_failure_count'],
                 data['download_avg'],
                 data['upload_avg'],
                 data['download_over_limit'],
             ]]
-            
-            # Логируем подготовленные данные для предсказания
-            logger.info("Подготовленные данные для модели: %s", input_data)
-            
-            # Прогнозируем
-            print(input_data)
-            prediction = model.predict(input_data)[0]
-            prediction_proba = model.predict_proba(input_data)[0][1]  # вероятность оттока
 
-            # Логируем результат предсказания
-            logger.info("Результат предсказания: %s, вероятность: %s", prediction, prediction_proba)
-            print(f"Prediction: {prediction}, Probability: {prediction_proba}")
+            # Масштабирование данных
+            input_data_scaled = scaler.transform(input_data)
+            
+            # Логируем масштабированные данные
+            logger.info("Подготовленные и масштабированные данные: %s", input_data_scaled)
+            
+            # Прогноз
+            prediction = model.predict(input_data_scaled)[0]
+            prediction_proba = model.predict_proba(input_data_scaled)[0][1]  # вероятность оттока
+            
+            # Логируем результат
+            logger.info("Результат: %s, вероятность: %s", prediction, prediction_proba)
 
-            # Обновляем значение для отображения в шаблоне
-            probability = "{:.2f}".format(prediction_proba * 100)
+            # Форматирование вероятности в проценты
+            probability = "{:.0f}".format(prediction_proba * 100)
+
+            # Очищаем форму после успешного предсказания
+            form = PredictionForm()
 
         else:
             # Логируем ошибки валидации
@@ -61,10 +68,13 @@ def predict_view(request):
                 'errors': form.errors,
             })
 
-    # Возвращаем результат на ту же страницу
+    else:
+        # Создаем пустую форму при GET-запросе
+        form = PredictionForm()
+
+    # Возвращаем результат и форму на страницу
     return render(request, 'project/prediction_form.html', {
         'form': form,
-        'prediction': 'Отток' if prediction == 1 else 'Не отток' if prediction is not None else None,
+        'prediction': 'Клієнт покине компанію' if prediction == 1 else 'Клієнт залишиться з компанією' if prediction is not None else None,
         'probability': probability,
     })
-

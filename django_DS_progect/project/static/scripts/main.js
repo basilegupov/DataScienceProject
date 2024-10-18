@@ -29,47 +29,56 @@ $(document).ready(function () {
         }, 1000);
     });
 
-    // Обработка формы предсказания
-    $('#prediction-form').on('submit', function(event) {
-        event.preventDefault(); // Предотвращаем перезагрузку страницы
+    // // Обработка формы предсказания
+    // $('#prediction-form').on('submit', function(event) {
+    //     event.preventDefault(); // Предотвращаем перезагрузку страницы
 
-        // Получаем CSRF-токен
-        const csrftoken = getCookie('csrftoken');
+    //     // Получаем CSRF-токен
+    //     const csrftoken = getCookie('csrftoken');
 
-        // Собираем данные формы
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData);
+    //     // Собираем данные формы
+    //     const formData = new FormData(this);
+    //     const data = Object.fromEntries(formData);
 
-        // Логируем собранные данные
-        console.log("Собранные данные формы:", data);
+    //     // Логируем собранные данные
+    //     console.log("Собранные данные формы:", data);
 
-        // Отправляем данные на сервер для получения предсказания
-        fetch("/predict", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken,
-            },
-            body: JSON.stringify(data),
-        })
-        .then((response) => {
-            if (!response.ok) {
-                // Обработка ошибки
-                return response.json().then(errData => {
-                    throw new Error(errData.error || "Неизвестная ошибка");
-                });
-            }
-            return response.json();
-        })
-        .then((data) => {
-            document.getElementById("result").textContent = data.prediction;
-            document.getElementById("prediction-result").style.display = "block";
-        })
-        .catch((error) => {
-            console.error("Ошибка при обработке запроса:", error);
-            // Отобразите ошибку пользователю
-            document.getElementById("result").textContent = `Ошибка: ${error.message}`;
-            document.getElementById("prediction-result").style.display = "block";
-        });
-    });
+    //     // Отправляем данные на сервер для получения предсказания
+    //     fetch("/predict", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "X-CSRFToken": csrftoken,
+    //         },
+    //         body: JSON.stringify(data),
+    //     })
+    //     .then((response) => {
+    //         if (!response.ok) {
+    //             // Обработка ошибки
+    //             return response.json().then(errData => {
+    //                 throw new Error(errData.error || "Неизвестная ошибка");
+    //             });
+    //         }
+    //         return response.json();
+    //     })
+    //     .then((data) => {
+    //         document.getElementById("result").textContent = data.prediction;
+    //         document.getElementById("prediction-result").style.display = "block";
+    //     })
+    //     .catch((error) => {
+    //         console.error("Ошибка при обработке запроса:", error);
+    //         // Отобразите ошибку пользователю
+    //         document.getElementById("result").textContent = `Ошибка: ${error.message}`;
+    //         document.getElementById("prediction-result").style.display = "block";
+    //     });
+    // });
+});
+
+// Добавляем класс 'flex' к родительскому <p>
+// Находим все чекбоксы внутри <p>
+const checkboxes = document.querySelectorAll('p input[type="checkbox"]');
+    
+checkboxes.forEach(function(checkbox) {
+    const parentParagraph = checkbox.closest('p'); // Находим родительский <p>
+    parentParagraph.classList.add('dis-flex'); // Добавляем класс 'dis-flex' к родительскому <p>
 });

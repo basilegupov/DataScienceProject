@@ -5,7 +5,7 @@ class PredictionForm(forms.Form):
 
     id = forms.IntegerField(
         label="ID",
-        initial=random.randint(0, 10000),
+        initial=random.randint(0, 100000),
         required=True,
         help_text="Случайный ID, сгенерированный автоматически."
     )
@@ -20,7 +20,7 @@ class PredictionForm(forms.Form):
         label="Чи є підписка на фільми?",
         help_text="Вкажіть, чи підписаний клієнт на пакет фільмів."
     )
-    subscription_age = forms.IntegerField(
+    subscription_age = forms.FloatField(
         required=True,
         label="Тривалість підписки (місяці)",
         help_text="Введіть кількість місяців з моменту початку підписки."
@@ -30,7 +30,7 @@ class PredictionForm(forms.Form):
         label="Середній рахунок",
         help_text="Введіть середню суму щомісячного рахунку."
     )
-    remaining_contract = forms.IntegerField(
+    reamining_contract = forms.FloatField(  # Исправлено название поля
         required=True,
         label="Залишок контракту (місяці)",
         help_text="Введіть кількість місяців, що залишилися до завершення контракту."
