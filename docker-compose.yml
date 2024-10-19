@@ -1,9 +1,9 @@
-version: '3.8'
+version: '3'
 
 services:
   web:
     build: .
-    command: python django_DS_progect/manage.py runserver 0.0.0.0:8000
+    command: pipenv run python django_DS_progect/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
@@ -20,13 +20,13 @@ services:
       - mynetwork
 
   db:
-    image: postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    image: postgres:15
     environment:
       POSTGRES_DB: mydb
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - mynetwork
 
@@ -35,4 +35,3 @@ networks:
 
 volumes:
   postgres_data:
-

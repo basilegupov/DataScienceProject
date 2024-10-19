@@ -1,27 +1,29 @@
-# Вибір базового образу з Python 3.12
-FROM python:3.12-slim
+# Use an official Python runtime as a parent image
+FROM python:3.11-slim
 
-# Встановлюємо робочу директорію для контейнера
+# Set the working directory in the container
 WORKDIR /app
 
-# Встановлюємо залежності для використання PostgreSQL і Pipenv
-RUN apt-get update && apt-get install -y gcc libpq-dev curl && \
-    curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+# Install gcc and PostgreSQL client dependencies
+RUN apt-get update && apt-get install -y gcc libpq-dev curl
 
-# Копіюємо Pipfile і Pipfile.lock до контейнера
+# Install pipenv
+RUN curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+
+# Copy Pipfile and Pipfile.lock
 COPY Pipfile Pipfile.lock /app/
 
-# Встановлюємо залежності через Pipenv
+# Generate a new Pipfile.lock
+RUN pipenv lock --clear
+
+# Install Python dependencies from Pipfile.lock
 RUN pipenv install --deploy --ignore-pipfile
 
-# Додаємо діагностику для перевірки встановлених пакетів
-RUN pipenv run pip freeze
-
-# Копіюємо всі файли проекту до контейнера
+# Copy the current directory contents into the container at /app
 COPY . /app/
 
-# Виставляємо порт 8000
+# Expose port 8000
 EXPOSE 8000
 
-# Виконуємо міграції бази даних і запускаємо сервер
-CMD ["sh", "-c", "pipenv run python /app/django_DS_progect/manage.py migrate && pipenv run python /app/django_DS_progect/manage.py runserver 0.0.0.0:8000"]
+# Run Django development server
+CMD ["pipenv", "run", "python", "django_DS_progect/manage.py", "runserver", "0.0.0.0:8000"]
