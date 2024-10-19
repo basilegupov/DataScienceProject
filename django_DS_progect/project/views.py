@@ -22,10 +22,10 @@ def predict_view(request):
             logger.info("Полученные данные из формы: %s", data)
             
             # Загрузка модели машинного обучения
-            model = joblib.load('project/XGBClassifier.pkl')
+            model = joblib.load('django_DS_progect/project/XGBClassifier.pkl')
             
             # Загрузка масштабировщика
-            scaler = joblib.load('project/scaler.pkl')
+            scaler = joblib.load('django_DS_progect/project/scaler.pkl')
 
             # Подготовка данных для модели
             input_data = [[
