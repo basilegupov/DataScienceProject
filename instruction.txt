@@ -1,0 +1,13 @@
+pipenv shell – запустимо його
+
+І. Створення проекту:
+
+Для того, щоб розпочати проект на Django виконаємо команду
+pipenv install django
+
+
+	Перейдемо в папку:
+cd .\django_DS_progect
+
+python manage.py runserver
+
