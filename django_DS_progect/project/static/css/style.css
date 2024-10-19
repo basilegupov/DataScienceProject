@@ -3330,6 +3330,7 @@ img {
 .iner_wrap .content {
   background-color: rgba(0, 0, 0, 0.8);
   max-width: 800px;
+  height: 80vh;
   margin: auto;
   padding: 20px;
   border-radius: 5px;
@@ -3363,12 +3364,6 @@ img {
   border-radius: 30px;
 }
 
-@media (max-width: 1440px) {
-  .iner_wrap .content {
-    height: 80vh;
-  }
-}
-
 .iner_wrap .content form {
   max-width: 100%;
   position: relative;
@@ -3390,7 +3385,7 @@ img {
   font-weight: bold;
   color: #c54242;
   position: absolute;
-  bottom: 9px;
+  bottom: 15px;
   left: -1px;
   z-index: 10;
   padding: 3px;
@@ -3467,7 +3462,7 @@ img {
 }
 
 .iner_wrap .content form .form-inner .dis-flex .helptext {
-  bottom: -17px;
+  bottom: -14px;
 }
 
 .iner_wrap .content form .form-inner legend {
@@ -3489,7 +3484,7 @@ img {
 .iner_wrap .content form .form-inner input[type="number"],
 .iner_wrap .content form .form-inner select {
   width: 100%;
-  padding: 7px 10px;
+  padding: 12px 10px;
   margin-bottom: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -3656,6 +3651,10 @@ img {
   justify-content: center;
 }
 
+.iner_wrap .content .prediction-result.hidden {
+  display: none;
+}
+
 .iner_wrap .content .prediction-result .prediction-result-inner {
   background-color: #2d430c;
   width: 100%;
@@ -3680,6 +3679,8 @@ img {
   letter-spacing: 6px;
   text-transform: uppercase;
   color: #ffffff;
+  max-width: 98%;
+  margin: 0 auto;
 }
 
 .iner_wrap .content .prediction-result ul li {

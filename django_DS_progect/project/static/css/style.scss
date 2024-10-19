@@ -247,6 +247,7 @@ img {
     .content {
         background-color: rgba(0, 0, 0, 0.8);
         max-width: 800px;
+        height: 80vh;
         margin: auto;
         padding: 20px;
         border-radius: 5px;
@@ -275,9 +276,6 @@ img {
             border: 1px $accentColor;
             border-radius: 30px;
         }
-        @media (max-width: 1440px) {
-            height: 80vh;
-        }
 
         form {
             max-width: 100%;
@@ -295,7 +293,7 @@ img {
                         font-weight: bold;
                         color: #c54242;
                         position: absolute;
-                        bottom: 9px;
+                        bottom: 15px;
                         left: -1px;
                         z-index: 10;
                         padding: 3px;
@@ -370,7 +368,7 @@ img {
                     }
 
                     .helptext {
-                        bottom: -17px;
+                        bottom: -14px;
                     }
                 }
 
@@ -393,7 +391,7 @@ img {
                 input[type="number"],
                 select {
                     width: 100%;
-                    padding: 7px 10px;
+                    padding: 12px 10px;
                     margin-bottom: 16px;
                     border: 1px solid #ccc;
                     border-radius: 4px;
@@ -534,6 +532,7 @@ img {
                 }
             }
         }
+    
 
         .prediction-result {
             overflow: hidden;
@@ -550,6 +549,10 @@ img {
             display: flex;
             align-items: center;
             justify-content: center;
+
+            &.hidden {
+                display: none;
+            }
 
             .prediction-result-inner {
                 background-color: #2d430c;
@@ -575,6 +578,8 @@ img {
                 letter-spacing: 6px;
                 text-transform: uppercase;
                 color: #ffffff;
+                max-width: 98%;
+                margin: 0 auto;
             }
             ul {
                 li {

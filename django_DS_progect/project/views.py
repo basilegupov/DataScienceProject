@@ -69,12 +69,12 @@ def predict_view(request):
             })
 
     else:
-        # Создаем пустую форму при GET-запросе
+        # Создаем пустую форму при GET-запросе, сбрасываем prediction и probability
         form = PredictionForm()
 
-    # Возвращаем результат и форму на страницу
+    # При GET-запросе (например, после перезагрузки страницы) prediction и probability будут равны None
     return render(request, 'project/prediction_form.html', {
         'form': form,
         'prediction': 'Клієнт покине компанію' if prediction == 1 else 'Клієнт залишиться з компанією' if prediction is not None else None,
-        'probability': probability,
+        'probability': probability if probability is not None else None,
     })

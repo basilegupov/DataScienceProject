@@ -39,15 +39,22 @@
             </div>
           </div>
         </form>
-        {% if prediction %}
-        <div id="result" class="prediction-result">
+
+        <!-- Блок для результата -->
+        <div id="result" class="prediction-result {% if not prediction %}hidden{% endif %}">
           <div class="prediction-result-inner">
             <h2>Результат прогнозу:</h2>
+            {% if prediction %}
             <p class="status">{{ prediction }}</p>
-            
+            {% endif %}
+            {% if probability %}
+            <p>Ймовірність відтоку: {{ probability }}%</p>
+            {% endif %}
           </div>
         </div>
-        {% endif %} {% if errors %}
+
+        <!-- Блок для ошибок валидации -->
+        {% if errors %}
         <div class="prediction-result">
           <div class="prediction-result-inner">
             <h3>Помилки валидації:</h3>
@@ -62,8 +69,9 @@
       </div>
     </section>
 
-    <script src=" {% static 'scripts/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'scripts/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'scripts/main.js' %}"></script>
+
     <script>
       document
         .getElementById("reset-button")
@@ -71,12 +79,21 @@
           // Очистить форму
           document.querySelector("#prediction-form").reset();
 
-          // Удалить результаты
-          const resultDiv = document.getElementById("result"); // Изменено на выбор по id
+          // Скрыть результат
+          const resultDiv = document.getElementById("result");
           if (resultDiv) {
-            resultDiv.remove(); // Удаляем блок с результатом
+            resultDiv.classList.add("hidden");
           }
         });
+
+      // После загрузки документа проверяем, есть ли результат предсказания
+      document.addEventListener("DOMContentLoaded", function () {
+        const resultDiv = document.getElementById("result");
+        if (resultDiv && resultDiv.querySelector(".status")) {
+          // Если есть предсказание, убираем класс hidden
+          resultDiv.classList.remove("hidden");
+        }
+      });
     </script>
   </body>
 </html>
