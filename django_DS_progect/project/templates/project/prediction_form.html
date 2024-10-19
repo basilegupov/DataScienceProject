@@ -39,22 +39,14 @@
             </div>
           </div>
         </form>
-
-        <!-- Блок для результата -->
-        <div id="result" class="prediction-result {% if not prediction %}hidden{% endif %}">
+        {% if prediction %}
+        <div id="result" class="prediction-result hidden">
           <div class="prediction-result-inner">
             <h2>Результат прогнозу:</h2>
-            {% if prediction %}
             <p class="status">{{ prediction }}</p>
-            {% endif %}
-            {% if probability %}
-            <p>Ймовірність відтоку: {{ probability }}%</p>
-            {% endif %}
           </div>
         </div>
-
-        <!-- Блок для ошибок валидации -->
-        {% if errors %}
+        {% endif %} {% if errors %}
         <div class="prediction-result">
           <div class="prediction-result-inner">
             <h3>Помилки валидації:</h3>
@@ -69,7 +61,7 @@
       </div>
     </section>
 
-    <script src="{% static 'scripts/jquery-3.3.1.min.js' %}"></script>
+    <script src=" {% static 'scripts/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'scripts/main.js' %}"></script>
 
     <script>
@@ -79,7 +71,7 @@
           // Очистить форму
           document.querySelector("#prediction-form").reset();
 
-          // Скрыть результат
+          // Добавляем класс hidden обратно, чтобы скрыть результат
           const resultDiv = document.getElementById("result");
           if (resultDiv) {
             resultDiv.classList.add("hidden");
@@ -89,9 +81,14 @@
       // После загрузки документа проверяем, есть ли результат предсказания
       document.addEventListener("DOMContentLoaded", function () {
         const resultDiv = document.getElementById("result");
+
+        // Если результат есть, то показываем блок
         if (resultDiv && resultDiv.querySelector(".status")) {
-          // Если есть предсказание, убираем класс hidden
           resultDiv.classList.remove("hidden");
+        }
+        // Если результата нет, скрываем блок
+        else {
+          resultDiv.classList.add("hidden");
         }
       });
     </script>
