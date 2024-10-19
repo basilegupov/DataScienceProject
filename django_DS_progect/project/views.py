@@ -22,10 +22,10 @@ def predict_view(request):
             logger.info("Полученные данные из формы: %s", data)
             
             # Загрузка модели машинного обучения
-            model = joblib.load('project/XGBClassifier.pkl')
+            model = joblib.load('django_DS_progect/project/XGBClassifier.pkl')
             
             # Загрузка масштабировщика
-            scaler = joblib.load('project/scaler.pkl')
+            scaler = joblib.load('django_DS_progect/project/scaler.pkl')
 
             # Подготовка данных для модели
             input_data = [[
@@ -69,12 +69,12 @@ def predict_view(request):
             })
 
     else:
-        # Создаем пустую форму при GET-запросе, сбрасываем prediction и probability
+        # Создаем пустую форму при GET-запросе
         form = PredictionForm()
 
-    # При GET-запросе (например, после перезагрузки страницы) prediction и probability будут равны None
+    # Возвращаем результат и форму на страницу
     return render(request, 'project/prediction_form.html', {
         'form': form,
         'prediction': 'Клієнт покине компанію' if prediction == 1 else 'Клієнт залишиться з компанією' if prediction is not None else None,
-        'probability': probability if probability is not None else None,
+        'probability': probability,
     })

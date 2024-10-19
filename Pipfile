@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+psycopg2 = "*"
 django = "*"
 joblib = "*"
 scikit-learn = "*"
@@ -12,4 +13,4 @@ xgboost = "*"
 [dev-packages]
 
 [requires]
-python_version = "3.12"
+python_version = "3.11"
